@@ -1,5 +1,10 @@
-CREATE TABLE tournaments (
-    tournamnet_id INTEGER PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS sponsors (
+    sponsor_id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tournaments (
+    tournament_id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
     kind_of_sport TEXT NOT NULL,
     prize_fund INTEGER,
@@ -9,7 +14,7 @@ CREATE TABLE tournaments (
     country TEXT NOT NULL
 );
 
-CREATE TABLE teams (
+CREATE TABLE IF NOT EXISTS teams (
     team_id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
     kind_of_sport TEXT NOT NULL,
@@ -17,10 +22,10 @@ CREATE TABLE teams (
     general_sponsor_id INTEGER REFERENCES sponsors(sponsor_id),
     last_year_prize_money INTEGER,
     winrate FLOAT DEFAULT(0),
-    next_tournament_id INTEGER REFERENCES tournament(tournament_id)
+    next_tournament_id INTEGER REFERENCES tournaments(tournament_id)
 );
 
-CREATE TABLE players (
+CREATE TABLE IF NOT EXISTS players (
     player_id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
     kind_of_sport TEXT NOT NULL,
@@ -31,10 +36,10 @@ CREATE TABLE players (
     winrate INTEGER DEFAULT(0),
     sponsor_id INTEGER REFERENCES sponsors(sponsor_id),
     next_game_time DATE,
-    next_tournament tournament_id REFERENCES tournaments(tournament_id)
+    next_tournament_id INTEGER REFERENCES tournaments(tournament_id)
 );
 
-CREATE TABLE sponsors (
-    sponsors_id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL
+CREATE TABLE IF NOT EXISTS participations (
+    team_id INTEGER REFERENCES teams(team_id),
+    tournament_id INTEGER REFERENCES tournaments(tournament_id)
 );
